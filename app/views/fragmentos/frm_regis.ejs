@@ -1,0 +1,235 @@
+<div>
+    <div>
+     
+
+        <form action="/guardar/Retencion" method="post">
+            <div>
+                <div class="col-md-6 form-group">
+                    <label for="fechaa">Fecha</label>
+                    <div class="input-group">
+                        <input type="date" class="form-control datepicker" id="fecha" name="fecha" required=""
+                            maxlength="10">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="fechaa">Clasificacion</label>
+                        <select name="clasificacion" id="clasificacion" class="form-control" required="">
+                            <option value="0">0%</option>
+                            <option value="10">10%</option>
+                            <option value="8"> 8%</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="id_medico">Nro Factura</label>
+                    <input type="text" name="numero" id="numero" class="form-control">
+
+                </div>
+
+                <div class="col-md-6">
+                    <label for="id_medico">Nombre</label>
+                    <input type="text" name="nombre" id="nombre" class="form-control">
+
+                </div>
+                <div>
+
+                    <div class="col-md-6">
+                        <label for="id_medico">Monto</label>
+                        <input type="number" name="monto" id="monto" class="form-control">
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="id_medico">Valor Total</label>
+                    <input type="text" name="valor" id="valor" name="valor" class="form-control">
+
+                </div>
+                <br><br>
+                <br><br>
+
+                <script>
+                    $(document).ready(function () {
+
+
+                        $("#mes").change(function () {
+                            var mes = document.getElementById("mes").value;
+                            Listar(mes);
+                        });
+
+                        $("#monto").change(function () {
+                            var por = document.getElementById("clasificacion").value;
+                            var monto = document.getElementById("monto").value;
+                            if (por == '0') {
+                                $('#valor').val(monto);
+                            }
+                            if (por == '8') {
+                                var valor = (monto * 0.08);
+                                var valor1 = monto * 1;
+
+                                $('#valor').val(valor + valor1);
+                            }
+                            if (por == '10') {
+                                var valor = (monto * 0.1);
+                                var valor1 = monto * 1;
+
+                                $('#valor').val(valor + valor1);
+                            }
+
+
+                        });
+
+                        function Listar(mes) {
+                            var html = '';
+                            var mes = document.getElementById("mes").value;
+                            var url = "http://localhost:4000/listar";
+                            var suma = 0;
+                            $.ajax({
+                                url: url,
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function (data, textStatus, jqXHR) {
+
+
+                                    $.each(data, function (i, element) {
+                                        var date = new Date(element.fecha);
+                                        var mes_name = date.getMonth() + 1;
+                                        //  alert(mes_name);
+                                        if (mes == 0) {
+                                            html += '<tr>';
+                                            html += '<td>' + element.nombre + '</td>';
+                                            html += '<td> ' + element.numero_factura + '     </td>';
+                                            html += '<td>' + element.external_factura + '</td>';
+                                            html += '<td>' + element.monto + '</td>';
+                                            html += '<td>' + element.fecha + '</td>';
+                                            html += '<td>' + element.valor_retenido + '</td>';
+                                            html += '<td> ' + ' <button  id=' + element.external_factura + ' type="button" class="btn btn-warning">Modificar</button>' + '</td>';
+                                            suma += element.valor_retenido;
+                                        } else {
+                                            if (mes_name == mes) {
+                                                html += '<tr>';
+                                                html += '<td>' + element.nombre + '</td>';
+                                                html += '<td> ' + element.numero_factura + '     </td>';
+                                                html += '<td>' + element.external_factura + '</td>';
+                                                html += '<td>' + element.monto + '</td>';
+                                                html += '<td>' + element.fecha + '</td>';
+                                                html += '<td>' + element.valor_retenido + '</td>';
+                                                html += '<td> ' + ' <button id=' + element.external_factura + ' type="button" class="btn btn-warning">Modificar</button>' + '</td>';
+
+                                                html += '<script >  ' +
+                                                        '$("#' + element.external_factura + '").click(function () {' +
+                                                    '$("#nombre").val("' + element.nombre + '");' +
+                                                    '$("#monto").val("' + element.monto + '");' +
+                                                    '$("#numero").val("' + element.numero_factura + '");' +
+                                                    '$("#external").val("' + element.external_factura + '");' +
+                                                    '$("#external_modificar").val("' + 0 + '");' +
+                                                    '  });' +
+                                                    ' </s' + 'cript>';
+
+                                                suma += element.valor_retenido;
+                                            }
+                                        }
+
+
+
+
+
+
+
+                                    });
+
+                                    // var date = new Date();
+                                    // var mes_name = date.getMonth()+1;
+                                    //  alert(mes_name);
+
+                                    $("#valorT").val(suma);
+                                    $("#tabla tbody").html(html);
+
+
+
+                                }, error: function (jqXHR, textStatus, errorThrown) {
+                                }
+                            });
+                        }
+
+                    });;
+                </script>
+                   <input type="hidden" name="external_modificar" id="external_modificar" value="1">
+                   <input type="hidden" name="external" id="external" value="1">
+
+
+
+                <div class="modal-footer">
+                    <input type="submit" name="action" id="action" class="btn btn-default" value="Guardar">
+                </div>
+                
+                
+
+
+        </form>
+        <form action="/saveReporte" method="post">
+            <div class="modal-footer">
+            <input type="submit"  class="btn btn-default" value="Factura">
+        </div>
+    </form>
+        <br><br><br>
+
+        <div class="col-md-6 form-group">
+            <label for="fechaa">Mes de busqueda</label>
+            <select name="mes" id="mes" class="form-control" required="">
+                <option value="0">Total</option>
+                <option value="1">enero</option>
+                <option value="2">febrero</option>
+                <option value="3">marzo</option>
+                <option value="4">abril</option>
+                <option value="5">mayo</option>
+                <option value="6">junio</option>
+                <option value="7">julio</option>
+                <option value="8">agosto</option>
+                <option value="9">septiembre</option>
+                <option value="10">octubre</option>
+                <option value="11">novienbre</option>
+                <option value="12">diciembre</option>
+
+            </select>
+        </div>
+
+
+        <div class="box-body">
+            <table id="tabla" class="table no-margin">
+                <br><br><br>
+                <thead class="text-center">
+                    <tr>
+                    <tr class="info">
+                        <td>Nombre</th>
+                        <td>Nr_factura</th>
+                        <td>Ruc</th>
+                        <td>Monto</th>
+                        <td>fecha</th>
+                        <td>Total</th>
+                        <td>Acion</th>
+
+                    </tr>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+
+                </tbody>
+
+
+            </table>
+            <div class="col-md-6">
+                <label for="id_medico">Suma Total</label>
+                <input type="text" name="valorT" id="valorT" class="form-control">
+
+            </div>
+            <br><br><br><br><br><br>
+            <div class="box-footer clearfix">
+
+
+            </div><!-- /.box-footer -->
+        </div><!-- /.box -->
+
+
+
+    </div>
+</div>

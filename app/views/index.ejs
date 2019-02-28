@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>No Sidebar - Landed by HTML5 UP</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        
+        
+        <script src="/assets/js/jquery.min.js"></script>
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/assets/css/main.css" />
+        <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+        
+        <script>
+          
+            var html = '';
+            fetch('https://api.github.com/users/hadley/repos')
+                .then(respuesta => { return respuesta.json(); })
+                .then(
+                    respuesta => {
+                        console.log(respuesta);
+                        for (i = 0; i < respuesta.length; i++) {
+                            html += '<option >' + respuesta[i].name + '</option>';
+                        }
+                        $('#repositorio').html(html);    
+                    });
+        </script>
+    </head>
+    <body class="is-preload">
+        <div id="page-wrapper">
+            <header id="header">
+                <h1 id="logo"><a href="/dashboard">SISTEMA DE ALGO</a></h1>
+                <nav id="nav"><nav id="nav"></nav>
+                    <ul>
+                        <li>
+                            <a href="#"></a>
+                                <li><a href="/1">uno</a></li>
+                                <li><a href="/2">dos</a></li>
+                            </ul>
+                        </li>                        
+                    </ul></nav>
+                </nav>
+            </header>
+
+            <!-- Main -->
+            <div id="main" class="wrapper style1">
+                <div class="container">
+                    <%- include(fragmento) %>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer id="footer">
+                <ul class="icons">
+                </ul>
+                <ul class="copyright">
+                    <li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                </ul>
+            </footer>
+
+        </div>
+
+        <!-- Scripts -->
+        
+        <script src="/assets/js/jquery.scrolly.min.js"></script>
+        <script src="/assets/js/jquery.dropotron.min.js"></script>
+        <script src="/assets/js/jquery.scrollex.min.js"></script>
+        <script src="/assets/js/browser.min.js"></script>
+        <script src="/assets/js/breakpoints.min.js"></script>
+        <script src="/assets/js/util.js"></script>
+        <script src="/assets/js/main.js"></script>
+
+    </body>
+</html>

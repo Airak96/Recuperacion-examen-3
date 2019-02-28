@@ -1,0 +1,16 @@
+{
+    "development":{
+        "username": "root",
+        "password": "root",
+        "database": "examenfinal",
+        "host": "localhost",
+        "dialect": "mysql"
+    },
+    "staging":{
+        "username": "root",
+        "password": "examen",
+        "database": "primera",
+        "host": "localhost",
+        "dialect": "mysql"
+    }
+}
